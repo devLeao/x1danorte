@@ -24,3 +24,167 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.fight-card {
+  isolation: isolate;
+}
+
+.fight-card::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: calc(1.75rem - 1px);
+  background:
+    linear-gradient(115deg, rgba(255, 255, 255, 0.15), transparent 22%, transparent 76%, rgba(245, 215, 110, 0.12)),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 34px);
+  mask-image: linear-gradient(to bottom, black, transparent 72%);
+  opacity: 0.7;
+}
+
+.fight-card::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 24px;
+  z-index: 0;
+  height: 34%;
+  border-radius: 999px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.88), transparent 70%);
+  filter: blur(18px);
+}
+
+.fight-card-shine {
+  transform: skewX(-18deg) translateX(-70%);
+  opacity: 0;
+  transition: transform 900ms ease, opacity 900ms ease;
+}
+
+.fight-card:hover .fight-card-shine {
+  transform: skewX(-18deg) translateX(520%);
+  opacity: 1;
+}
+
+.duel-card-image {
+  filter:
+    saturate(1.08)
+    contrast(1.04)
+    drop-shadow(0 26px 36px rgba(0, 0, 0, 0.55));
+}
+
+.footer-icon-button {
+  display: inline-flex;
+  height: 48px;
+  width: 48px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.76);
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease;
+}
+
+.footer-icon-button:hover {
+  transform: translateY(-2px);
+  border-color: rgba(217, 164, 4, 0.45);
+  background: rgba(217, 164, 4, 0.1);
+  color: #d9a404;
+}
+
+.footer-icon-button svg {
+  height: 22px;
+  width: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.footer-icon-button-gold {
+  border-color: rgba(217, 164, 4, 0.45);
+  background: #d9a404;
+  color: #050505;
+}
+
+.footer-icon-button-gold:hover {
+  background: #f1c232;
+  color: #050505;
+}
+
+.fire-particles span {
+  position: absolute;
+  bottom: -24px;
+  left: calc(var(--x, 50) * 1%);
+  width: var(--size, 7px);
+  height: var(--size, 7px);
+  border-radius: 999px;
+  background: radial-gradient(circle, #ffe08a 0 18%, #d9a404 36%, rgba(190, 42, 12, 0.72) 62%, transparent 76%);
+  filter: blur(0.2px);
+  opacity: 0;
+  animation: fire-rise var(--duration, 6s) linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+.fire-particles span:nth-child(1) { --x: 8; --size: 5px; --duration: 6.5s; --delay: -1s; }
+.fire-particles span:nth-child(2) { --x: 14; --size: 8px; --duration: 7.2s; --delay: -3s; }
+.fire-particles span:nth-child(3) { --x: 21; --size: 6px; --duration: 5.8s; --delay: -2s; }
+.fire-particles span:nth-child(4) { --x: 29; --size: 10px; --duration: 8s; --delay: -4s; }
+.fire-particles span:nth-child(5) { --x: 35; --size: 5px; --duration: 6.2s; --delay: -5s; }
+.fire-particles span:nth-child(6) { --x: 42; --size: 8px; --duration: 7.6s; --delay: -2.5s; }
+.fire-particles span:nth-child(7) { --x: 49; --size: 6px; --duration: 6.8s; --delay: -1.8s; }
+.fire-particles span:nth-child(8) { --x: 56; --size: 9px; --duration: 8.4s; --delay: -3.6s; }
+.fire-particles span:nth-child(9) { --x: 63; --size: 5px; --duration: 5.9s; --delay: -2.8s; }
+.fire-particles span:nth-child(10) { --x: 70; --size: 8px; --duration: 7.4s; --delay: -4.4s; }
+.fire-particles span:nth-child(11) { --x: 77; --size: 6px; --duration: 6.4s; --delay: -1.4s; }
+.fire-particles span:nth-child(12) { --x: 84; --size: 10px; --duration: 8.6s; --delay: -5.2s; }
+.fire-particles span:nth-child(13) { --x: 91; --size: 5px; --duration: 6s; --delay: -2.2s; }
+.fire-particles span:nth-child(14) { --x: 17; --size: 7px; --duration: 8.1s; --delay: -6s; }
+.fire-particles span:nth-child(15) { --x: 38; --size: 4px; --duration: 5.6s; --delay: -3.3s; }
+.fire-particles span:nth-child(16) { --x: 66; --size: 7px; --duration: 7.7s; --delay: -6.4s; }
+.fire-particles span:nth-child(17) { --x: 73; --size: 4px; --duration: 6.1s; --delay: -2.7s; }
+.fire-particles span:nth-child(18) { --x: 88; --size: 7px; --duration: 7.9s; --delay: -4.9s; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .fight-card {
+    animation: duel-card-float 6s ease-in-out infinite;
+  }
+
+  .fight-card:nth-child(2) {
+    animation-delay: -1.4s;
+  }
+
+  .fight-card:nth-child(3) {
+    animation-delay: -2.2s;
+  }
+}
+
+@keyframes duel-card-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes fire-rise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.8);
+  }
+
+  12% {
+    opacity: 0.8;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(24px, -360px, 0) scale(0.18);
+  }
+}
