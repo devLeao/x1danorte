@@ -115,38 +115,122 @@ body {
   color: #050505;
 }
 
-.fire-particles span {
-  position: absolute;
-  bottom: -24px;
-  left: calc(var(--x, 50) * 1%);
-  width: var(--size, 7px);
-  height: var(--size, 7px);
-  border-radius: 999px;
-  background: radial-gradient(circle, #ffe08a 0 18%, #d9a404 36%, rgba(190, 42, 12, 0.72) 62%, transparent 76%);
-  filter: blur(0.2px);
-  opacity: 0;
-  animation: fire-rise var(--duration, 6s) linear infinite;
-  animation-delay: var(--delay, 0s);
+.skew-tag {
+  display: inline-flex;
+  transform: skewX(-8deg);
 }
 
-.fire-particles span:nth-child(1) { --x: 8; --size: 5px; --duration: 6.5s; --delay: -1s; }
-.fire-particles span:nth-child(2) { --x: 14; --size: 8px; --duration: 7.2s; --delay: -3s; }
-.fire-particles span:nth-child(3) { --x: 21; --size: 6px; --duration: 5.8s; --delay: -2s; }
-.fire-particles span:nth-child(4) { --x: 29; --size: 10px; --duration: 8s; --delay: -4s; }
-.fire-particles span:nth-child(5) { --x: 35; --size: 5px; --duration: 6.2s; --delay: -5s; }
-.fire-particles span:nth-child(6) { --x: 42; --size: 8px; --duration: 7.6s; --delay: -2.5s; }
-.fire-particles span:nth-child(7) { --x: 49; --size: 6px; --duration: 6.8s; --delay: -1.8s; }
-.fire-particles span:nth-child(8) { --x: 56; --size: 9px; --duration: 8.4s; --delay: -3.6s; }
-.fire-particles span:nth-child(9) { --x: 63; --size: 5px; --duration: 5.9s; --delay: -2.8s; }
-.fire-particles span:nth-child(10) { --x: 70; --size: 8px; --duration: 7.4s; --delay: -4.4s; }
-.fire-particles span:nth-child(11) { --x: 77; --size: 6px; --duration: 6.4s; --delay: -1.4s; }
-.fire-particles span:nth-child(12) { --x: 84; --size: 10px; --duration: 8.6s; --delay: -5.2s; }
-.fire-particles span:nth-child(13) { --x: 91; --size: 5px; --duration: 6s; --delay: -2.2s; }
-.fire-particles span:nth-child(14) { --x: 17; --size: 7px; --duration: 8.1s; --delay: -6s; }
-.fire-particles span:nth-child(15) { --x: 38; --size: 4px; --duration: 5.6s; --delay: -3.3s; }
-.fire-particles span:nth-child(16) { --x: 66; --size: 7px; --duration: 7.7s; --delay: -6.4s; }
-.fire-particles span:nth-child(17) { --x: 73; --size: 4px; --duration: 6.1s; --delay: -2.7s; }
-.fire-particles span:nth-child(18) { --x: 88; --size: 7px; --duration: 7.9s; --delay: -4.9s; }
+.gradient-text {
+  background-image: linear-gradient(90deg, #d9a404, #f2b705, #fff2bf, #d9a404, #f5a623);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-shift 6s ease-in-out infinite;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.hero-clip {
+  clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+@property --border-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.champion-frame {
+  position: relative;
+  padding: 3px;
+  isolation: isolate;
+}
+
+.champion-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: conic-gradient(
+    from var(--border-angle),
+    transparent 0%,
+    #d9a404 6%,
+    #fff6d9 11%,
+    #d9a404 16%,
+    transparent 34%,
+    transparent 100%
+  );
+  animation: neon-spin 3s linear infinite;
+  filter: drop-shadow(0 0 6px rgba(217, 164, 4, 0.7));
+}
+
+.champion-frame > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes neon-spin {
+  to {
+    --border-angle: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .champion-frame::before {
+    animation-duration: 16s;
+  }
+}
+
+.pulse-dot {
+  animation: pulse-dot 2.2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(217, 164, 4, 0.55);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(217, 164, 4, 0);
+  }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .hero-clip {
+    clip-path: none;
+  }
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .fight-card {
@@ -170,21 +254,5 @@ body {
 
   50% {
     transform: translateY(-6px);
-  }
-}
-
-@keyframes fire-rise {
-  0% {
-    opacity: 0;
-    transform: translate3d(0, 0, 0) scale(0.8);
-  }
-
-  12% {
-    opacity: 0.8;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate3d(24px, -360px, 0) scale(0.18);
   }
 }

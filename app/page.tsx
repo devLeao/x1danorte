@@ -1,58 +1,45 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import Script from "next/script";
+import { useEffect, useRef, useState } from "react";
 
-const heroImages = ["/fundo1.jpg", "/fundo2.jpg"];
+const NEXT_EVENT_ANNOUNCED = false;
 
-const winRanking = [
-  { pos: "01", name: "Marlon", wins: 8, record: "8V - 1D", note: "Atual Rei da Norte" },
-  { pos: "02", name: "Salles", wins: 6, record: "6V - 2D", note: "Desafiante do cinturão" },
-  { pos: "03", name: "Roma", wins: 5, record: "5V - 2D", note: "Referência no x2" },
-  { pos: "04", name: "Macedo", wins: 4, record: "4V - 3D", note: "Jogo agressivo" },
-  { pos: "05", name: "Victor", wins: 3, record: "3V - 3D", note: "Busca o top 3" },
-];
-
-const kingRanking = [
-  { pos: "01", name: "Marlon", points: "1V", status: "1 jogo" },
-  { pos: "02", name: "Salles", points: "1V", status: "1 jogo" },
-  { pos: "03", name: "Galinha", points: "0V", status: "2 jogos / 2 derrotas" },
+const reiDaNorteRanking = [
+  { pos: "01", name: "Vitinho", games: "1 jogo", record: "1 vitoria", image: "/confrontos/vitin.png", champion: true },
+  { pos: "02", name: "Marlon", games: "1 jogo", record: "1 vitoria", image: "/confrontos/marlon.png" },
+  { pos: "03", name: "Salles", games: "1 jogo", record: "1 vitoria", image: "/confrontos/salles3x4.png" },
 ];
 
 const fights = [
   {
-    category: "X1",
     title: "Macedo x Victor",
-    prize: "Premiação de 2K",
     left: { name: "Macedo", image: "/confrontos/macedo.png" },
     right: { name: "Victor", image: "/confrontos/vitin.png" },
-    badge: "Abertura da noite",
+    featured: false,
   },
   {
-    category: "X2",
     title: "Roma x Aposentados",
-    prize: "Premiação de 2K",
     left: { name: "Roma", image: "/confrontos/roma.png" },
     right: { name: "Aposentados", image: "/confrontos/aposentados.png" },
-    badge: "Duelo de experiência",
+    featured: false,
   },
   {
-    category: "X1",
     title: "Marlon x Salles",
-    prize: "Premiação de 4K",
     left: { name: "Marlon", image: "/confrontos/marlon.png" },
     right: { name: "Salles", image: "/confrontos/salles.png" },
-    badge: "Rei da Norte",
     featured: true,
   },
 ];
 
 const duelCardTitles = ["Victor x Macedo", "Aposentados x Roma", "Salles x Marlon"];
 
-const reiDaNorteRanking = [
-  { pos: "Top 1", name: "Marlon", games: "1 jogo", record: "1 vitoria", image: "/confrontos/marlin3x4.png", champion: true },
-  { pos: "Top 2", name: "Salles", games: "1 jogo", record: "1 vitoria", image: "/confrontos/salles3x4.png" },
-  { pos: "Top 3", name: "Galinha", games: "2 jogos", record: "2 derrotas", image: "/confrontos/gala3x4.png" },
+const instagramVideos: string[] = [
+  "https://www.instagram.com/p/Dad-p7jxs1d/",
+  "https://www.instagram.com/p/DaRCO_iRVZ2/",
+  "https://www.instagram.com/p/DaOn8l2RYPS/",
+  "https://www.instagram.com/p/DaKtfIORXMW/",
 ];
 
 const partners = [
@@ -67,543 +54,426 @@ const partners = [
 ];
 
 export default function X1DaNorteSite() {
-  const [current, setCurrent] = useState(0);
-
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % heroImages.length);
-    }, 4500);
-
-    return () => clearInterval(interval);
+    const instgrm = (window as unknown as { instgrm?: { Embeds: { process: () => void } } }).instgrm;
+    instgrm?.Embeds.process();
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#0A0A0A] text-[#F5F5F5] selection:bg-[#D9A404] selection:text-black">
-      <section className="relative isolate min-h-screen overflow-hidden border-b border-white/10">
-        {heroImages.map((image, index) => (
-          <div
-            key={image}
-            className={`absolute inset-0 scale-105 transition-[opacity,transform] duration-[1800ms] ease-in-out ${
-              current === index ? "opacity-100" : "opacity-0"
-            }`}
-            style={{
-              backgroundImage: `linear-gradient(to bottom, rgba(10,10,10,.45), rgba(10,10,10,.82), rgba(10,10,10,.98)), url(${image})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              transform: current === index ? "scale(1)" : "scale(1.045)",
-            }}
+    <main className="min-h-screen bg-[#0A0A0A] pb-[92px] font-[family-name:var(--font-tag)] text-[#F5F5F5] selection:bg-[#D9A404] selection:text-black md:pb-[118px]">
+      {/* HERO */}
+      <section className="relative isolate overflow-hidden border-b-4 border-[#D9A404] bg-black">
+        <header className="relative z-30 mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-6 lg:px-8">
+          <Image
+            src="/logo.png"
+            alt="Logo X1 da Norte"
+            width={200}
+            height={160}
+            priority
+            className="h-20 w-auto object-contain md:h-24"
           />
-        ))}
-
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(217,164,4,.18),transparent_28%),linear-gradient(to_right,rgba(255,255,255,.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,.06)_1px,transparent_1px)] bg-[size:auto,72px_72px,72px_72px] opacity-40" />
-
-        <header className="relative z-20 mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-6 lg:px-8">
-          <div>
-            <Image
-              src="/logo.png"
-              alt="Logo X1 da Norte"
-              width={240}
-              height={192}
-              priority
-              className="h-32 w-auto object-contain md:h-40 lg:h-48"
-            />
-          </div>
-
-          <nav className="absolute right-0 top-0 hidden gap-8 pt-6 text-sm font-medium text-white/70 md:flex lg:pt-8">
-            <a href="#evento" className="transition hover:text-white">Evento</a>
-            <a href="#rei" className="transition hover:text-white">Rei da Norte</a>
-            <a href="#proximo-evento" className="transition hover:text-white">Confrontos</a>
+          <nav className="hidden gap-8 text-xs font-bold uppercase tracking-[0.28em] text-white/60 md:flex">
+            <a href="#evento" className="transition hover:text-[#D9A404]">A Liga</a>
+            <a href="#rei" className="transition hover:text-[#D9A404]">Rei da Norte</a>
+            <a href="#rainha" className="transition hover:text-[#D9A404]">Rainha da Norte</a>
+            <a href="#videos" className="transition hover:text-[#D9A404]">Vídeos</a>
+            <a href="#contato" className="transition hover:text-[#D9A404]">Contato</a>
           </nav>
         </header>
 
-        <div className="relative z-20 mx-auto flex min-h-[70vh] max-w-7xl items-start px-6 pb-12 pt-3 lg:px-8 lg:pb-16 lg:pt-5">
-          <div className="grid w-full gap-10 lg:grid-cols-1">
-            <div className="max-w-[620px]">
-              <div>
-                <h2 className="-mt-8 max-w-4xl text-[18vw] font-black uppercase italic leading-[0.9] tracking-tight sm:text-[14vw] md:text-[10vw] lg:-mt-16 lg:text-[7rem]">
-                  X1 da <br /> <span className="text-[#D9A404]">Norte</span>
-                </h2>
+        <div className="relative grid lg:grid-cols-[0.82fr_1.18fr]">
+          <div className="relative z-20 flex flex-col justify-center px-6 pb-14 pt-4 lg:px-16 lg:pb-24 lg:pt-10">
+            <p className="skew-tag mb-6 inline-flex w-fit items-center bg-[#D9A404] px-5 py-2 text-xs font-bold uppercase tracking-[0.3em] text-black">
+              Liga oficial de X1
+            </p>
+            <h1 className="font-[family-name:var(--font-display)] text-[13vw] leading-[0.92] tracking-tight text-white sm:text-[9vw] lg:text-[4rem]">
+              Aonde os <span className="gradient-text">brabos</span> se <span className="gradient-text">encontram</span>
+            </h1>
+            <p className="mt-6 max-w-lg text-base leading-7 text-white/65">
+              Os confrontos mais pesados, os atletas mais falados e a atmosfera que transforma cada duelo em prova de respeito. Quem entra precisa sustentar o nome dentro da quadra.
+            </p>
+            <div className="mt-9 flex flex-wrap gap-4">
+              <a href="#rei" className="skew-tag bg-[#D9A404] px-8 py-4 text-sm font-bold uppercase tracking-[0.2em] text-black transition hover:bg-white">
+                Rei da Norte
+              </a>
+              <a href="#evento" className="skew-tag border-2 border-white/25 px-8 py-4 text-sm font-bold uppercase tracking-[0.2em] text-white transition hover:border-[#D9A404] hover:text-[#D9A404]">
+                A Liga
+              </a>
+            </div>
+          </div>
 
-                <p className="mt-6 max-w-2xl text-base leading-7 text-white/74 md:text-lg">
-                  Os confrontos mais pesados, os atletas mais falados e a atmosfera que transforma cada duelo em prova de respeito. Aqui, quem entra precisa sustentar o nome dentro da quadra.
-                </p>
+          <div className="hero-clip relative z-10 min-h-[340px] lg:min-h-[560px]">
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `linear-gradient(180deg, rgba(0,0,0,.1), rgba(0,0,0,.55)), url(/fundo2.jpg)`,
+                backgroundSize: "cover",
+                backgroundPosition: "95% 22%",
+              }}
+            />
+          </div>
+        </div>
 
-                <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-                  <a
-                    href="#proximo-evento"
-                    className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#D9A404] px-7 py-4 text-sm font-black uppercase tracking-[0.18em] text-black transition hover:scale-[1.02]"
-                  >
-                    Próximo evento <span aria-hidden="true">›</span>
-                  </a>
-                  <a
-                    href="#evento"
-                    className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/5 px-7 py-4 text-sm font-black uppercase tracking-[0.18em] text-white transition hover:bg-white/10"
-                  >
-                    Liga X1 da Norte <span aria-hidden="true">›</span>
-                  </a>
-                </div>
+        <div className="relative z-20 border-t border-white/10 bg-[#0A0A0A]">
+          <div className="mx-auto grid max-w-7xl grid-cols-3 divide-x divide-white/10 px-6 lg:px-8">
+            {[
+              ["03", "DUELOS"],
+              ["04K", "MAIN EVENT"],
+              ["01", "CINTURÃO"],
+            ].map(([value, label]) => (
+              <div key={label} className="px-4 py-5 text-center">
+                <p className="font-[family-name:var(--font-display)] text-4xl text-[#D9A404] md:text-5xl">{value}</p>
+                <p className="mt-1 text-[10px] font-bold tracking-[0.3em] text-white/45">{label}</p>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="border-b border-white/8 bg-[#050505] py-8">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#111111] p-3 md:p-4">
-            <div className="relative overflow-hidden rounded-[1.5rem] border border-[#D9A404]/15 bg-black">
-              <video
-                className="h-[140px] w-full object-cover md:h-[180px] lg:h-[220px]"
-                src="/anuncios.mp4"
-                autoPlay
-                muted
-                loop
-                playsInline
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="evento" className="relative isolate overflow-hidden border-b border-white/8 bg-[#080808] py-28">
+      {/* A LIGA */}
+      <section id="evento" className="relative overflow-hidden bg-[#0e0e0e] py-24">
         <video
-          className="absolute inset-0 h-full w-full object-cover opacity-52"
+          className="absolute inset-0 h-full w-full object-cover opacity-15 grayscale"
           src="/fundo.mp4"
           autoPlay
           muted
           loop
           playsInline
         />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,.94),rgba(0,0,0,.72)_46%,rgba(0,0,0,.86)),radial-gradient(circle_at_72%_30%,rgba(217,164,4,.22),transparent_30%)]" />
-
-        <div className="relative mx-auto grid max-w-7xl gap-12 px-6 lg:grid-cols-[0.86fr_1.14fr] lg:items-end lg:px-8">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#D9A404]">A liga</p>
-            <h3 className="mt-4 max-w-2xl text-5xl font-black uppercase italic leading-[0.9] tracking-tight md:text-7xl">
-              O palco onde o nome <span className="text-[#D9A404]">vira alvo</span>.
-            </h3>
-            <p className="mt-6 max-w-xl text-base leading-7 text-white/72 md:text-lg">
-              Confrontos com chamada oficial, rivalidade real e ranking valendo moral. Na Norte, cada jogo mexe na fila do cinturão.
-            </p>
-
-            <div className="mt-8 grid max-w-xl grid-cols-3 overflow-hidden rounded-2xl border border-white/10 bg-black/35 backdrop-blur">
-              {[
-                ["03", "duelos"],
-                ["04K", "main event"],
-                ["01", "cinturão"],
-              ].map(([value, label]) => (
-                <div key={label} className="border-r border-white/10 p-4 last:border-r-0">
-                  <p className="text-3xl font-black italic text-[#D9A404]">{value}</p>
-                  <p className="mt-1 text-[11px] font-black uppercase tracking-[0.2em] text-white/45">{label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid gap-4">
-            <p className="hidden">
-              O X1 da Norte organiza confrontos diretos com identidade de várzea, entrega de atleta grande e estrutura de evento. Cada duelo vale mais do que placar: vale nome, moral e posição no ranking.
-            </p>
-            <p className="hidden">
-              A disputa principal gira em torno do cinturão Rei da Norte. Quem domina a noite vira referência; quem desafia precisa provar dentro da quadra.
-            </p>
-            <div className="grid gap-4">
-              {[
-                ["Formato", "X1 e X2 com premiação, chamada oficial e confronto montado para gerar jogo grande."],
-                ["Ranking", "Vitória pesa, derrota cobra. Cada duelo muda a fila e aumenta a pressão do próximo card."],
-                ["Cinturão", "O Rei da Norte carrega o posto máximo até a próxima defesa. Quem desafia precisa provar na quadra."],
-              ].map(([title, text], index) => (
-                <div
-                  key={title}
-                  className="group relative overflow-hidden rounded-2xl border border-white/10 bg-black/45 p-6 backdrop-blur transition hover:border-[#D9A404]/35 hover:bg-black/60"
-                >
-                  <div className="absolute inset-y-0 left-0 w-1 bg-[#D9A404]" />
-                  <div className="grid gap-4 sm:grid-cols-[72px_1fr] sm:items-center">
-                    <p className="text-5xl font-black italic text-white/10 transition group-hover:text-[#D9A404]/22">0{index + 1}</p>
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#D9A404]">{title}</p>
-                      <p className="mt-3 text-sm leading-6 text-white/68 md:text-base">{text}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="rei" className="border-b border-white/8 bg-[#090909] py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#D9A404]">Atual campeão</p>
-              <h3 className="mt-3 text-5xl font-black uppercase italic leading-[0.88] tracking-tight md:text-7xl">
-                Rei da <span className="text-[#D9A404]">Norte</span>
-              </h3>
-            </div>
-            <p className="max-w-2xl text-white/65 md:text-lg">
-              Marlon chega como dono do cinturão e lidera o ranking atual do Rei da Norte.
-            </p>
-          </div>
-
-          <div className="grid gap-6 lg:grid-cols-[.92fr_1.08fr]">
-            <div className="relative min-h-[620px] overflow-hidden rounded-2xl border border-[#D9A404]/35 bg-[linear-gradient(145deg,rgba(217,164,4,.18),rgba(17,17,17,.96)_45%,rgba(0,0,0,.98))] shadow-[0_30px_90px_rgba(0,0,0,.45)]">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(245,215,110,.25),transparent_32%),linear-gradient(to_bottom,transparent,rgba(0,0,0,.78))]" />
-              <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-[#F5D76E]/80 to-transparent" />
-              <p className="absolute left-6 top-6 z-10 rounded-full border border-[#D9A404]/35 bg-black/45 px-4 py-2 text-xs font-black uppercase tracking-[0.22em] text-[#F5D76E]">
-                Campeao atual
-              </p>
-              <Image
-                src="/rei-da-norte.jpg"
-                alt="Marlon, atual Rei da Norte"
-                width={900}
-                height={1200}
-                priority
-                className="absolute inset-0 h-full w-full object-cover object-center opacity-90"
-              />
-              <Image
-                src="/confrontos/cinturão.png"
-                alt="Cinturão Rei da Norte"
-                width={360}
-                height={260}
-                className="absolute right-4 top-16 z-10 w-28 rotate-6 object-contain drop-shadow-[0_18px_35px_rgba(0,0,0,.65)] sm:right-8 sm:w-40"
-              />
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/72 to-transparent p-6 pt-28 md:p-8 md:pt-32">
-                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#F5D76E]">Dono do cinturão</p>
-                <h4 className="mt-3 text-6xl font-black uppercase italic leading-none md:text-8xl">Marlon</h4>
-                <div className="mt-5 flex flex-wrap gap-3">
-                  <span className="rounded-full border border-white/12 bg-white/8 px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-white/75">1 jogo</span>
-                  <span className="rounded-full border border-[#D9A404]/30 bg-[#D9A404] px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-black">1 vitoria</span>
-                </div>
-                <p className="mt-4 max-w-xl text-white/72 md:text-lg">
-                  Campeão atual, referência da liga e alvo principal de quem quer sentar no trono da Norte.
-                </p>
-              </div>
-            </div>
-
-            <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#101010] shadow-[0_30px_90px_rgba(0,0,0,.35)]">
-              <div className="border-b border-white/10 bg-[linear-gradient(90deg,rgba(217,164,4,.14),transparent)] p-6 md:p-7">
-                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#D9A404]">Ranking atual</p>
-                <h4 className="mt-3 text-4xl font-black uppercase italic tracking-tight md:text-5xl">Rei da Norte</h4>
-              </div>
-
-              <div className="grid gap-3 p-4 md:p-5">
-                {reiDaNorteRanking.map((row) => (
-                  <div
-                    key={row.pos}
-                    className={`relative min-h-[124px] overflow-hidden rounded-xl border ${
-                      row.champion
-                        ? "border-[#D9A404]/50 bg-[linear-gradient(135deg,rgba(217,164,4,.9),rgba(150,102,0,.88))] text-black shadow-[0_18px_45px_rgba(217,164,4,.18)]"
-                        : "border-white/10 bg-[#171717] text-white"
-                    }`}
-                  >
-                    <div className="relative z-10 grid min-h-[124px] grid-cols-[72px_88px_minmax(0,1fr)_auto] items-center gap-4 px-5">
-                      <p className={`text-sm font-black uppercase tracking-[0.18em] ${row.champion ? "text-black/65" : "text-[#D9A404]"}`}>
-                        {row.pos}
-                      </p>
-                      <div className="relative -mb-px flex h-[124px] w-[88px] self-end overflow-hidden">
-                        <Image
-                          src={row.image}
-                          alt={row.name}
-                          width={160}
-                          height={220}
-                          className="h-full w-full object-cover object-top drop-shadow-[0_12px_16px_rgba(0,0,0,.35)]"
-                        />
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-3xl font-black uppercase italic leading-none md:text-4xl">{row.name}</p>
-                        <p className={`mt-2 text-sm font-semibold uppercase tracking-[0.16em] ${row.champion ? "text-black/62" : "text-white/42"}`}>
-                          {row.games} / {row.record}
-                        </p>
-                      </div>
-                      {row.champion ? (
-                        <Image
-                          src="/confrontos/cinturão.png"
-                          alt="Cinturao"
-                          width={110}
-                          height={80}
-                          className="w-20 rotate-6 object-contain drop-shadow-[0_10px_18px_rgba(0,0,0,.32)]"
-                        />
-                      ) : (
-                        <span className="text-4xl font-black italic text-white/12">{row.pos.replace("Top ", "#")}</span>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="hidden">
-              <div className="rounded-xl border border-white/10 bg-[#131313] p-7">
-                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-white/40">Status</p>
-                <h4 className="mt-3 text-3xl font-black uppercase italic tracking-tight">Cinturão ativo</h4>
-                <p className="mt-3 text-white/66">
-                  O posto está em jogo no confronto Marlon x Salles. Vitória mantém a coroa; derrota inaugura um novo reinado.
-                </p>
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="rounded-xl border border-white/10 bg-[#131313] p-6">
-                  <p className="text-xs uppercase tracking-[0.22em] text-white/40">Campanha</p>
-                  <p className="mt-3 text-5xl font-black italic text-[#D9A404]">8V</p>
-                  <p className="mt-2 text-sm text-white/60">Líder em vitórias no ranking.</p>
-                </div>
-                <div className="rounded-xl border border-white/10 bg-[#131313] p-6">
-                  <p className="text-xs uppercase tracking-[0.22em] text-white/40">Próxima defesa</p>
-                  <p className="mt-3 text-5xl font-black italic text-[#D9A404]">16/05</p>
-                  <p className="mt-2 text-sm text-white/60">Noite valendo 4K.</p>
-                </div>
-              </div>
-
-              <div className="rounded-xl border border-[#D9A404]/20 bg-[linear-gradient(180deg,rgba(217,164,4,.12),rgba(217,164,4,.04))] p-7">
-                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#F5D76E]">Confronto principal</p>
-                <h4 className="mt-3 text-3xl font-black uppercase italic tracking-tight">Marlon x Salles</h4>
-                <p className="mt-3 text-white/72">
-                  Rei da Norte, premiação de 4K e o duelo que decide quem sai carregando o cinturão.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="ranking" className="hidden">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#D9A404]">Classificação oficial</p>
-              <h3 className="mt-3 text-5xl font-black uppercase italic leading-none tracking-tight md:text-7xl">
-                Rankings da <span className="text-[#D9A404]">liga</span>
-              </h3>
-            </div>
-            <p className="max-w-2xl text-white/65 md:text-lg">
-              Duas leituras para acompanhar a temporada: quem mais venceu no X1 e quem está mais perto do posto de Rei da Norte.
-            </p>
-          </div>
-
-          <div className="grid gap-6 lg:grid-cols-2">
-            <RankingTable title="Mais vitórias no X1" subtitle="Ranking por quantidade de vitórias" rows={winRanking} mode="wins" />
-            <RankingTable title="Rank do Rei da Norte" subtitle="Pontuação pela corrida do cinturão" rows={kingRanking} mode="points" />
-          </div>
-        </div>
-      </section>
-
-      <section id="proximo-evento" className="relative overflow-hidden border-b border-white/8 bg-[#070707] py-24">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_15%,rgba(217,164,4,.13),transparent_30%),radial-gradient(circle_at_86%_8%,rgba(178,28,28,.16),transparent_28%),linear-gradient(to_bottom,transparent,rgba(0,0,0,.72))]" />
-        <div className="absolute inset-0 opacity-[.13] bg-[linear-gradient(to_right,rgba(255,255,255,.7)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,.7)_1px,transparent_1px)] bg-[size:56px_56px]" />
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mb-12 grid gap-8 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#D9A404]">Próximo evento</p>
-              <h3 className="mt-4 text-5xl font-black uppercase italic leading-[0.9] tracking-tight md:text-7xl">
-                16 de <span className="text-[#D9A404]">maio</span>
-              </h3>
-            </div>
-            <p className="max-w-3xl text-white/72 md:text-lg">
-              A próxima edição já chega com três duelos confirmados, duas premiações de 2K e a luta principal valendo o cinturão Rei da Norte.
-            </p>
+          <div className="flex items-center gap-4">
+            <span className="h-3 w-3 bg-[#D9A404] pulse-dot" />
+            <p className="text-xs font-bold uppercase tracking-[0.4em] text-white/50">A liga</p>
           </div>
+          <h2 className="mt-4 font-[family-name:var(--font-display)] text-6xl leading-[0.85] text-white md:text-8xl">
+            O PALCO ONDE O NOME <span className="text-[#D9A404]">VIRA ALVO</span>
+          </h2>
+          <p className="mt-6 max-w-2xl text-base leading-7 text-white/65 md:text-lg">
+            Confrontos com chamada oficial, rivalidade real e ranking valendo moral. Na Norte, cada jogo mexe na fila do cinturão.
+          </p>
 
-          <div className="grid gap-7">
-            {fights.map((fight, index) => (
-              <article
-                key={fight.title}
-                className={`fight-card group relative overflow-hidden rounded-[1.75rem] border p-2 shadow-[0_32px_80px_rgba(0,0,0,.44)] transition duration-500 hover:-translate-y-1 md:p-3 ${
-                  fight.featured
-                    ? "border-[#D9A404]/55 bg-[linear-gradient(135deg,rgba(217,164,4,.18),rgba(13,13,13,.98)_42%,rgba(111,16,16,.28))]"
-                    : "border-white/12 bg-[linear-gradient(135deg,rgba(255,255,255,.07),rgba(13,13,13,.98)_46%,rgba(111,16,16,.14))]"
-                }`}
-              >
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_44%,rgba(255,255,255,.10),transparent_24%),linear-gradient(90deg,rgba(217,164,4,.1),transparent_30%,transparent_70%,rgba(178,28,28,.12))]" />
-                <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-[#F5D76E]/80 to-transparent" />
-                <div className="absolute -left-24 top-8 h-56 w-56 rounded-full bg-[#D9A404]/10 blur-3xl" />
-                <div className="absolute -right-24 bottom-8 h-64 w-64 rounded-full bg-red-700/12 blur-3xl" />
-                <div className="fight-card-shine absolute inset-y-0 -left-1/3 w-1/3 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-                <div className="relative z-10 overflow-hidden rounded-[1.35rem] bg-black">
-                  <Image
-                    src={`/confrontos/duelo${index + 1}.png`}
-                    alt={`Card oficial ${duelCardTitles[index]}`}
-                    width={1440}
-                    height={640}
-                    sizes="(min-width: 1280px) 1216px, calc(100vw - 48px)"
-                    className="duel-card-image h-auto w-full object-cover transition duration-700 group-hover:scale-[1.012]"
-                    priority={fight.featured}
-                  />
-                  <div className="pointer-events-none absolute inset-0 rounded-[1.35rem] ring-1 ring-inset ring-white/10" />
+          <div className="mt-14 grid gap-px overflow-hidden bg-white/10 md:grid-cols-3">
+            {[
+              ["01", "Formato", "X1 e X2 com premiação, chamada oficial e confronto montado para gerar jogo grande."],
+              ["02", "Ranking", "Vitória pesa, derrota cobra. Cada duelo muda a fila e aumenta a pressão do próximo card."],
+              ["03", "Cinturão", "O Rei da Norte carrega o posto máximo até a próxima defesa. Quem desafia precisa provar na quadra."],
+            ].map(([num, title, text], index) => (
+              <Reveal key={title} delay={index * 120}>
+                <div className="group bg-[#0e0e0e] p-8 transition-all duration-300 hover:-translate-y-1 hover:bg-black">
+                  <p className="font-[family-name:var(--font-display)] text-3xl text-white/15 transition group-hover:text-[#D9A404]">{num}</p>
+                  <p className="mt-4 text-xs font-bold uppercase tracking-[0.3em] text-[#D9A404]">{title}</p>
+                  <p className="mt-3 text-sm leading-6 text-white/60">{text}</p>
                 </div>
-              </article>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="contato" className="relative overflow-hidden bg-[#080808] py-24">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(217,164,4,.18),transparent_28%),linear-gradient(135deg,rgba(217,164,4,.08),transparent_34%,rgba(120,12,12,.16))]" />
-        <div className="fire-particles pointer-events-none absolute inset-0" aria-hidden="true">
-          {Array.from({ length: 18 }).map((_, index) => (
-            <span key={index} />
-          ))}
-        </div>
-        <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="overflow-hidden rounded-[1.75rem] border border-[#D9A404]/20 bg-black shadow-[0_34px_90px_rgba(0,0,0,.48)]">
-            <div className="grid lg:grid-cols-[1fr_auto]">
-              <div className="p-7 md:p-10 lg:p-12">
-                <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#D9A404]">Entre no radar</p>
-                <h3 className="mt-4 max-w-4xl text-5xl font-black uppercase italic leading-[0.9] tracking-tight md:text-7xl">
-                  Quer teu nome no <span className="text-[#D9A404]">próximo card</span>?
-                </h3>
-                <p className="mt-6 max-w-3xl text-lg leading-8 text-white/72">
-                  Faz um vídeo, posta no Instagram marcando <span className="font-black text-white">@x1_danorte</span> e desafia o jogador que você quer enfrentar.
-                </p>
-              </div>
-
-              <div className="flex flex-col justify-end gap-4 border-t border-white/10 bg-white/[.04] p-7 md:p-10 lg:min-w-[360px] lg:border-l lg:border-t-0">
-                <a
-                  href="https://www.instagram.com/x1_danorte/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center rounded-2xl bg-[#D9A404] px-7 py-4 text-sm font-black uppercase tracking-[0.18em] text-black transition hover:scale-[1.03]"
-                >
-                  Marcar no Instagram
-                </a>
-                <a
-                  href="https://wa.me/5531987373781"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center rounded-2xl border border-white/12 bg-black/40 px-7 py-4 text-sm font-black uppercase tracking-[0.18em] text-white transition hover:border-[#D9A404]/50 hover:text-[#D9A404]"
-                >
-                  Chamar no WhatsApp
-                </a>
+      {/* REI DA NORTE */}
+      <section id="rei" className="border-t border-white/10 bg-black py-24">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div className="flex items-center gap-4">
+              <span className="h-3 w-3 bg-[#D9A404] pulse-dot" />
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.4em] text-white/50">Atual campeão</p>
+                <h2 className="mt-2 font-[family-name:var(--font-display)] text-6xl leading-[0.85] text-white md:text-8xl">
+                  REI DA <span className="text-[#D9A404]">NORTE</span>
+                </h2>
               </div>
             </div>
+            <p className="max-w-md text-white/55">Vitinho chega como dono do cinturão e lidera o ranking atual do Rei da Norte.</p>
           </div>
-        </div>
-      </section>
 
-      <section id="contato-old" className="hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_20%,rgba(217,164,4,.18),transparent_30%),radial-gradient(circle_at_82%_70%,rgba(160,18,18,.18),transparent_32%)]" />
-        <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid overflow-hidden rounded-[1.75rem] border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,.07),rgba(10,10,10,.96)_42%,rgba(217,164,4,.08))] shadow-[0_34px_90px_rgba(0,0,0,.42)] lg:grid-cols-[1fr_.72fr]">
-            <div className="p-7 md:p-10 lg:p-12">
-              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#D9A404]">Entre no radar</p>
-              <h3 className="mt-4 max-w-3xl text-5xl font-black uppercase italic leading-[0.9] tracking-tight md:text-7xl">
-                Quer teu nome no <span className="text-[#D9A404]">próximo card</span>?
-              </h3>
-              <p className="mt-6 max-w-2xl text-white/70 md:text-lg">
-                Manda teu material, mostra tua campanha e entra na conversa dos próximos desafios da liga.
+          <Reveal>
+          <div className="grid gap-px overflow-hidden bg-white/10 lg:grid-cols-[.95fr_1.05fr]">
+            <div className="champion-frame">
+            <div className="relative min-h-[560px] overflow-hidden bg-[#0e0e0e]">
+              <p className="absolute left-0 top-0 z-10 bg-[#D9A404] px-5 py-2 text-xs font-bold uppercase tracking-[0.3em] text-black">
+                Campeão atual
               </p>
-
-              <div className="mt-9 flex flex-col gap-4 sm:flex-row">
-                <a
-                  href="https://wa.me/5531987373781"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center rounded-2xl bg-[#D9A404] px-7 py-4 text-sm font-black uppercase tracking-[0.18em] text-black transition hover:scale-[1.03]"
-                >
-                  Chamar no WhatsApp
-                </a>
-                <a
-                  href="https://www.instagram.com/x1_danorte/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center rounded-2xl border border-white/12 bg-white/5 px-7 py-4 text-sm font-black uppercase tracking-[0.18em] text-white transition hover:border-[#D9A404]/40 hover:bg-white/10 hover:text-[#D9A404]"
-                >
-                  Ver Instagram
-                </a>
+              <Image
+                src="/confrontos/reidanorte.jpeg"
+                alt="Vitinho, atual Rei da Norte"
+                width={900}
+                height={1200}
+                priority
+                className="absolute inset-0 h-full w-full object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+              <Image
+                src="/confrontos/cinturão.png"
+                alt="Cinturão Rei da Norte"
+                width={360}
+                height={260}
+                className="absolute right-6 top-16 z-10 w-28 rotate-6 object-contain drop-shadow-[0_18px_35px_rgba(0,0,0,.65)] sm:w-40"
+              />
+              <div className="absolute inset-x-0 bottom-0 p-7 md:p-9">
+                <p className="text-xs font-bold uppercase tracking-[0.3em] text-white/70">Dono do cinturão</p>
+                <h3 className="font-[family-name:var(--font-display)] text-7xl leading-none text-white md:text-8xl">Vitinho</h3>
+                <div className="mt-5 flex flex-wrap gap-3">
+                  <span className="border border-white/25 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-white/80">1 jogo</span>
+                  <span className="bg-[#D9A404] px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-black">1 vitoria</span>
+                </div>
               </div>
             </div>
+            </div>
 
-            <div className="border-t border-white/10 bg-black/35 p-7 md:p-10 lg:border-l lg:border-t-0">
-              <p className="text-xs font-black uppercase tracking-[0.28em] text-white/38">Envie seu material</p>
-              <div className="mt-6 grid gap-4">
-                {["Nome e posição", "Vídeos jogando", "Campanha atual"].map((item, index) => (
-                  <div key={item} className="flex items-center gap-4 rounded-xl border border-white/10 bg-white/[.04] p-4">
-                    <span className="text-2xl font-black italic text-[#D9A404]">0{index + 1}</span>
-                    <p className="text-sm font-black uppercase tracking-[0.16em] text-white/72">{item}</p>
+            <div className="bg-[#0e0e0e]">
+              <div className="border-b border-white/10 px-7 py-6 md:px-8">
+                <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#D9A404]">Ranking atual</p>
+                <h3 className="mt-2 font-[family-name:var(--font-display)] text-4xl text-white md:text-5xl">Rei da Norte</h3>
+              </div>
+
+              <div className="divide-y divide-white/10">
+                {reiDaNorteRanking.map((row) => (
+                  <div
+                    key={row.pos}
+                    className={`relative grid min-h-[124px] grid-cols-[64px_88px_minmax(0,1fr)_auto] items-center gap-4 px-6 transition-colors duration-300 ${
+                      row.champion ? "bg-[#D9A404] text-black" : "text-white hover:bg-white/5"
+                    }`}
+                  >
+                    <p className={`font-[family-name:var(--font-display)] text-3xl ${row.champion ? "text-black/55" : "text-white/25"}`}>
+                      {row.pos}
+                    </p>
+                    <div className="relative h-[104px] w-[88px] self-end overflow-hidden">
+                      <Image
+                        src={row.image}
+                        alt={row.name}
+                        width={160}
+                        height={220}
+                        className="h-full w-full object-cover object-top"
+                      />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="font-[family-name:var(--font-display)] text-3xl leading-none md:text-4xl">{row.name}</p>
+                      <p className={`mt-2 text-xs font-bold uppercase tracking-[0.2em] ${row.champion ? "text-black/65" : "text-white/40"}`}>
+                        {row.games} / {row.record}
+                      </p>
+                    </div>
+                    {row.champion ? (
+                      <Image
+                        src="/confrontos/cinturão.png"
+                        alt="Cinturao"
+                        width={110}
+                        height={80}
+                        className="w-16 rotate-6 object-contain"
+                      />
+                    ) : (
+                      <span className="font-[family-name:var(--font-display)] text-3xl text-white/15">#{row.pos}</span>
+                    )}
                   </div>
                 ))}
               </div>
             </div>
           </div>
-        </div>
-        <div className="hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(217,164,4,.14),transparent_34%)]" />
-        <div className="relative mx-auto max-w-5xl px-6 text-center lg:px-8">
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#D9A404]">Entre no radar</p>
-          <h3 className="mt-4 text-5xl font-black uppercase italic leading-[0.9] tracking-tight md:text-7xl">
-            Quer teu nome no <span className="text-[#D9A404]">card</span>?
-          </h3>
-          <p className="mx-auto mt-6 max-w-2xl text-white/70 md:text-lg">
-            Manda teu material, mostra tua campanha e entra na fila dos próximos desafios da liga.
-          </p>
-
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a
-              href="#"
-              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#D9A404] px-7 py-4 text-sm font-black uppercase tracking-[0.18em] text-black transition hover:scale-[1.03]"
-            >
-              Chamar no WhatsApp
-            </a>
-            <a
-              href="#"
-              className="inline-flex items-center justify-center rounded-2xl border border-white/12 bg-white/5 px-7 py-4 text-sm font-black uppercase tracking-[0.18em] text-white transition hover:bg-white/10"
-            >
-              Ver Instagram
-            </a>
-          </div>
-        </div>
+          </Reveal>
         </div>
       </section>
 
-      <section className="border-y border-white/10 bg-black py-9">
-        <div className="mx-auto max-w-7xl px-6 text-center lg:px-8">
-          <p className="text-sm font-black uppercase tracking-[0.16em] text-white/80">Parceiros</p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-7 md:gap-x-14">
-              {partners.map((partner) => {
-                const logo = (
+      {/* RAINHA DA NORTE */}
+      <section id="rainha" className="border-t border-white/10 bg-black py-24">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mb-12 flex items-center gap-4">
+            <span className="h-3 w-3 bg-[#D9A404] pulse-dot" />
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.4em] text-white/50">Atual campeã</p>
+              <h2 className="mt-2 font-[family-name:var(--font-display)] text-6xl leading-[0.85] text-white md:text-8xl">
+                RAINHA DA <span className="text-[#D9A404]">NORTE</span>
+              </h2>
+            </div>
+          </div>
+
+          <Reveal>
+          <div className="grid gap-px overflow-hidden bg-white/10 lg:grid-cols-[.95fr_1.05fr]">
+            <div className="champion-frame">
+            <div className="relative min-h-[420px] overflow-hidden bg-[#0e0e0e] md:min-h-[560px]">
+              <p className="absolute left-0 top-0 z-10 bg-[#D9A404] px-5 py-2 text-xs font-bold uppercase tracking-[0.3em] text-black">
+                Rainha atual
+              </p>
+              <Image
+                src="/rafarainha.jpeg"
+                alt="Rafaela, atual Rainha da Norte"
+                width={1200}
+                height={1600}
+                className="absolute inset-0 h-full w-full object-cover object-top"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-7 md:p-9">
+                <p className="text-xs font-bold uppercase tracking-[0.3em] text-white/70">Dona do título</p>
+                <h3 className="font-[family-name:var(--font-display)] text-7xl leading-none text-white md:text-8xl">Rafaela</h3>
+              </div>
+            </div>
+            </div>
+
+            <div className="flex flex-col justify-center bg-[#0e0e0e] p-8 md:p-10">
+              <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#D9A404]">A conquista</p>
+              <h3 className="mt-2 font-[family-name:var(--font-display)] text-4xl text-white md:text-5xl">
+                Rafaela, Rainha da Norte
+              </h3>
+              <p className="mt-5 max-w-md text-base leading-7 text-white/60">
+                Em uma noite mágica na Arena Águia Dourada, Rafaela leva o cinturão na partida contra Maiza e vence pelo placar de 4x1. O reinado começa — quem vai ser a próxima a desafiar?
+              </p>
+            </div>
+          </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* VÍDEOS DO INSTAGRAM */}
+      <section id="videos" className="border-t border-white/10 bg-[#0e0e0e] py-24">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="flex items-center gap-4">
+            <span className="h-3 w-3 bg-[#D9A404] pulse-dot" />
+            <p className="text-xs font-bold uppercase tracking-[0.4em] text-white/50">Direto do Instagram</p>
+          </div>
+          <h2 className="mt-4 font-[family-name:var(--font-display)] text-6xl leading-[0.85] text-white md:text-8xl">
+            MOMENTOS DA <span className="text-[#D9A404]">NORTE</span>
+          </h2>
+
+          {instagramVideos.length > 0 ? (
+            <>
+              <HorizontalScroller>
+                {instagramVideos.map((url, index) => (
+                  <div key={url} className="shrink-0 snap-start" style={{ width: "min(85vw, 360px)" }}>
+                    <Reveal delay={index * 100}>
+                      <blockquote
+                        className="instagram-media"
+                        data-instgrm-permalink={url}
+                        data-instgrm-version="14"
+                        style={{ background: "#000", border: 0, margin: 0, width: "100%" }}
+                      />
+                    </Reveal>
+                  </div>
+                ))}
+              </HorizontalScroller>
+              <p className="mt-4 text-xs font-bold uppercase tracking-[0.2em] text-white/30">Arraste para o lado para ver mais →</p>
+            </>
+          ) : (
+            <p className="mt-12 max-w-xl text-white/40">
+              Em breve: vídeos direto do nosso Instagram aparecem aqui.
+            </p>
+          )}
+        </div>
+      </section>
+      <Script src="https://www.instagram.com/embed.js" strategy="lazyOnload" onLoad={() => {
+        (window as unknown as { instgrm?: { Embeds: { process: () => void } } }).instgrm?.Embeds.process();
+      }} />
+
+      {NEXT_EVENT_ANNOUNCED && (
+        <section id="proximo-evento" className="border-t border-white/10 bg-[#0e0e0e] py-24">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <h2 className="font-[family-name:var(--font-display)] text-6xl text-white md:text-8xl">
+              PRÓXIMO <span className="text-[#D9A404]">EVENTO</span>
+            </h2>
+            <div className="mt-10 grid gap-6">
+              {fights.map((fight, index) => (
+                <article key={fight.title} className="overflow-hidden bg-black">
                   <Image
-                    src={partner.image}
-                    alt={partner.name}
-                    width={170}
-                    height={90}
-                    className="max-h-12 w-auto object-contain opacity-45 grayscale transition hover:opacity-90 hover:grayscale-0"
+                    src={`/confrontos/duelo${index + 1}.png`}
+                    alt={`Card oficial ${duelCardTitles[index]}`}
+                    width={1440}
+                    height={640}
+                    className="h-auto w-full object-cover"
+                    priority={fight.featured}
                   />
-                );
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
-                return partner.href ? (
-                  <a key={partner.name} href={partner.href} target="_blank" rel="noopener noreferrer" aria-label={partner.name}>
-                    {logo}
-                  </a>
-                ) : (
-                  <div key={partner.name}>{logo}</div>
-                );
-              })}
+      {/* CONTATO */}
+      <section id="contato" className="border-t border-white/10 bg-black py-24">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <Reveal>
+          <div className="grid overflow-hidden border-2 border-[#D9A404] lg:grid-cols-[1fr_auto]">
+            <div className="p-8 md:p-12">
+              <p className="text-xs font-bold uppercase tracking-[0.4em] text-[#D9A404]">Entre no radar</p>
+              <h2 className="mt-4 font-[family-name:var(--font-display)] text-6xl leading-[0.85] text-white md:text-7xl">
+                QUER TEU NOME NO <span className="text-[#D9A404]">PRÓXIMO CARD</span>?
+              </h2>
+              <p className="mt-6 max-w-2xl text-lg leading-8 text-white/65">
+                Faz um vídeo, posta no Instagram marcando <span className="font-bold text-white">@x1_danorte</span> e desafia o jogador que você quer enfrentar.
+              </p>
+            </div>
+
+            <div className="flex flex-col justify-end gap-4 border-t border-white/10 bg-white/[.03] p-8 md:p-10 lg:min-w-[340px] lg:border-l lg:border-t-0">
+              <a
+                href="https://www.instagram.com/x1_danorte/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="skew-tag bg-[#D9A404] px-7 py-4 text-center text-sm font-bold uppercase tracking-[0.2em] text-black transition hover:bg-white"
+              >
+                Marcar no Instagram
+              </a>
+              <a
+                href="https://wa.me/5531987373781"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="skew-tag border-2 border-white/20 px-7 py-4 text-center text-sm font-bold uppercase tracking-[0.2em] text-white transition hover:border-[#D9A404] hover:text-[#D9A404]"
+              >
+                Chamar no WhatsApp
+              </a>
+            </div>
+          </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* PARCEIROS */}
+      <section className="border-t border-white/10 bg-[#0e0e0e] py-10">
+        <div className="mx-auto max-w-7xl px-6 text-center lg:px-8">
+          <p className="text-xs font-bold uppercase tracking-[0.3em] text-white/50">Patrocinadores oficiais</p>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-7 md:gap-x-14">
+            {partners.map((partner) => {
+              const logo = (
+                <Image
+                  src={partner.image}
+                  alt={partner.name}
+                  width={170}
+                  height={90}
+                  className="max-h-12 w-auto object-contain opacity-40 grayscale transition hover:opacity-90 hover:grayscale-0"
+                />
+              );
+
+              return partner.href ? (
+                <a key={partner.name} href={partner.href} target="_blank" rel="noopener noreferrer" aria-label={partner.name}>
+                  {logo}
+                </a>
+              ) : (
+                <div key={partner.name}>{logo}</div>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      <footer className="relative overflow-hidden border-t border-white/10 bg-[#050505]">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_0%,rgba(217,164,4,.16),transparent_30%),linear-gradient(180deg,rgba(255,255,255,.04),transparent)]" />
-        <div className="relative mx-auto max-w-7xl px-6 py-12 lg:px-8">
+      {/* FOOTER */}
+      <footer className="border-t border-white/10 bg-black">
+        <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-[1.15fr_.8fr_auto] lg:items-start">
             <div>
-              <Image src="/logo.png" alt="Logo X1 da Norte" width={150} height={120} className="h-24 w-auto object-contain" />
-              <p className="mt-5 max-w-md text-sm leading-6 text-white/55">
+              <Image src="/logo.png" alt="Logo X1 da Norte" width={140} height={112} className="h-20 w-auto object-contain" />
+              <p className="mt-5 max-w-md text-sm leading-6 text-white/50">
                 X1 da Norte é duelo, cinturão e chamada pesada. Quem quer respeito precisa provar dentro da quadra.
               </p>
             </div>
 
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.28em] text-[#D9A404]">Mapa</p>
+              <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#D9A404]">Mapa</p>
               <div className="mt-5 grid gap-3">
-                <a href="#evento" className="text-sm font-semibold uppercase tracking-[0.16em] text-white/62 transition hover:text-[#D9A404]">A liga</a>
-                <a href="#rei" className="text-sm font-semibold uppercase tracking-[0.16em] text-white/62 transition hover:text-[#D9A404]">Rei da Norte</a>
-                <a href="#proximo-evento" className="text-sm font-semibold uppercase tracking-[0.16em] text-white/62 transition hover:text-[#D9A404]">Confrontos</a>
+                <a href="#evento" className="text-sm font-bold uppercase tracking-[0.16em] text-white/55 transition hover:text-[#D9A404]">A liga</a>
+                <a href="#rei" className="text-sm font-bold uppercase tracking-[0.16em] text-white/55 transition hover:text-[#D9A404]">Rei da Norte</a>
+                <a href="#rainha" className="text-sm font-bold uppercase tracking-[0.16em] text-white/55 transition hover:text-[#D9A404]">Rainha da Norte</a>
+                <a href="#contato" className="text-sm font-bold uppercase tracking-[0.16em] text-white/55 transition hover:text-[#D9A404]">Contato</a>
               </div>
             </div>
 
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.28em] text-[#D9A404]">Contato</p>
+              <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#D9A404]">Contato</p>
               <div className="mt-5 flex items-center gap-3">
                 <a href="https://www.instagram.com/x1_danorte/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="footer-icon-button">
                   <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" /></svg>
@@ -618,143 +488,142 @@ export default function X1DaNorteSite() {
             </div>
           </div>
 
-          <div className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs font-semibold uppercase tracking-[0.18em] text-white/36 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs font-semibold uppercase tracking-[0.18em] text-white/30 sm:flex-row sm:items-center sm:justify-between">
             <p>© 2026 X1 da Norte. Todos os direitos reservados.</p>
             <p>Desenvolvido por <a href="https://devleaoagencia.netlify.app/" target="_blank" rel="noopener noreferrer" className="text-[#D9A404] transition hover:text-white">DevLeão</a></p>
           </div>
         </div>
       </footer>
 
-      <footer className="hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_0%,rgba(217,164,4,.16),transparent_30%),linear-gradient(180deg,rgba(255,255,255,.04),transparent)]" />
-        <div className="relative mx-auto max-w-7xl px-6 py-12 lg:px-8">
-          <div className="grid gap-10 lg:grid-cols-[1.2fr_.8fr_.8fr] lg:items-start">
-            <div>
-              <Image
-                src="/logo.png"
-                alt="Logo X1 da Norte"
-                width={150}
-                height={120}
-                className="h-24 w-auto object-contain"
-              />
-              <p className="mt-5 max-w-md text-sm leading-6 text-white/55">
-                X1 da Norte é duelo, cinturão e chamada pesada. Quem quer respeito precisa provar dentro da quadra.
-              </p>
-            </div>
-
-            <div>
-              <p className="text-xs font-black uppercase tracking-[0.28em] text-[#D9A404]">Mapa</p>
-              <div className="mt-5 grid gap-3">
-                <a href="#evento" className="text-sm font-semibold uppercase tracking-[0.16em] text-white/62 transition hover:text-[#D9A404]">A liga</a>
-                <a href="#rei" className="text-sm font-semibold uppercase tracking-[0.16em] text-white/62 transition hover:text-[#D9A404]">Rei da Norte</a>
-                <a href="#proximo-evento" className="text-sm font-semibold uppercase tracking-[0.16em] text-white/62 transition hover:text-[#D9A404]">Confrontos</a>
-              </div>
-            </div>
-
-            <div>
-              <p className="text-xs font-black uppercase tracking-[0.28em] text-[#D9A404]">Contato</p>
-              <div className="mt-5 grid gap-3">
-                <a
-                  href="https://www.instagram.com/x1_danorte/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-xl border border-white/10 bg-white/[.04] px-4 py-3 text-sm font-black uppercase tracking-[0.16em] text-white transition hover:border-[#D9A404]/40 hover:text-[#D9A404]"
-                >
-                  Instagram
-                </a>
-                <a
-                  href="https://wa.me/5531987373781"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-xl border border-[#D9A404]/35 bg-[#D9A404] px-4 py-3 text-sm font-black uppercase tracking-[0.16em] text-black transition hover:scale-[1.02]"
-                >
-                  WhatsApp
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs font-semibold uppercase tracking-[0.18em] text-white/36 sm:flex-row sm:items-center sm:justify-between">
-            <p>X1 da Norte</p>
-            <p>@x1_danorte</p>
-          </div>
-        </div>
-      </footer>
-
-      <footer className="hidden">
-        <div className="mx-auto grid max-w-7xl gap-8 px-6 py-10 lg:grid-cols-[1fr_auto] lg:items-center lg:px-8">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#D9A404]">X1 da Norte</p>
-            <p className="mt-3 max-w-xl text-sm text-white/50">Confrontos, cinturão e nomes que precisam provar dentro da quadra.</p>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-3">
-            <a href="#evento" className="rounded-full border border-white/10 bg-white/5 px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-white/70 transition hover:border-[#D9A404]/30 hover:text-[#D9A404]">A liga</a>
-            <a href="#proximo-evento" className="rounded-full border border-white/10 bg-white/5 px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-white/70 transition hover:border-[#D9A404]/30 hover:text-[#D9A404]">Confrontos</a>
-            <a href="https://www.instagram.com/x1_danorte/" target="_blank" rel="noopener noreferrer" className="rounded-full border border-white/10 bg-white/5 px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-white/70 transition hover:border-[#D9A404]/30 hover:text-[#D9A404]">Instagram</a>
-            <a href="https://wa.me/5531987373781" target="_blank" rel="noopener noreferrer" className="rounded-full border border-[#D9A404]/35 bg-[#D9A404] px-4 py-3 text-xs font-black uppercase tracking-[0.18em] text-black transition hover:scale-[1.03]">WhatsApp</a>
-          </div>
-        </div>
-        <div className="hidden">
-        <div className="mx-auto flex max-w-7xl flex-col gap-8 px-6 py-10 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#D9A404]">X1 da Norte</p>
-            <p className="mt-3 text-sm text-white/50">Duelo, ranking e cinturão em jogo.</p>
-          </div>
-
-          <div className="flex items-center gap-3">
-            {["Instagram", "YouTube", "WhatsApp"].map((item) => (
-              <a
-                key={item}
-                href="#"
-                className="rounded-full border border-white/10 bg-white/5 px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-white/70 transition hover:border-[#D9A404]/30 hover:text-[#D9A404]"
-              >
-                {item}
-              </a>
-            ))}
-          </div>
-        </div>
-        </div>
-      </footer>
+      <StickyAdBar />
     </main>
   );
 }
 
-type RankingRow =
-  | { pos: string; name: string; wins: number; record: string; note: string }
-  | { pos: string; name: string; points: string; status: string };
+function HorizontalScroller({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const drag = useRef({ active: false, startX: 0, startScroll: 0, moved: false });
 
-function RankingTable({
-  title,
-  subtitle,
-  rows,
-  mode,
-}: {
-  title: string;
-  subtitle: string;
-  rows: RankingRow[];
-  mode: "wins" | "points";
-}) {
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    const el = ref.current;
+    if (!el) return;
+    drag.current = { active: true, startX: e.clientX, startScroll: el.scrollLeft, moved: false };
+    el.setPointerCapture(e.pointerId);
+  };
+
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const el = ref.current;
+    if (!el || !drag.current.active) return;
+    const delta = e.clientX - drag.current.startX;
+    if (Math.abs(delta) > 4) drag.current.moved = true;
+    el.scrollLeft = drag.current.startScroll - delta;
+  };
+
+  const endDrag = (e: React.PointerEvent<HTMLDivElement>) => {
+    drag.current.active = false;
+    ref.current?.releasePointerCapture(e.pointerId);
+  };
+
   return (
-    <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#131313]">
-      <div className="border-b border-white/10 p-6">
-        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#D9A404]">{subtitle}</p>
-        <h4 className="mt-3 text-3xl font-black uppercase italic tracking-tight">{title}</h4>
-      </div>
-      <div className="divide-y divide-white/8">
-        {rows.map((row) => (
-          <div key={row.pos} className="grid grid-cols-[64px_1fr_auto] items-center gap-4 p-5 transition hover:bg-white/[0.03]">
-            <p className="text-2xl font-black italic text-[#D9A404]">{row.pos}</p>
-            <div>
-              <p className="text-lg font-black uppercase italic">{row.name}</p>
-              <p className="mt-1 text-sm text-white/50">{"note" in row ? row.note : row.status}</p>
-            </div>
-            <div className="text-right">
-              <p className="text-xl font-black text-white">{mode === "wins" && "wins" in row ? `${row.wins}V` : "points" in row ? row.points : ""}</p>
-              <p className="mt-1 text-xs uppercase tracking-[0.18em] text-white/40">{"record" in row ? row.record : "ranking"}</p>
-            </div>
-          </div>
-        ))}
+    <div
+      ref={ref}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={endDrag}
+      onPointerLeave={endDrag}
+      onClickCapture={(e) => {
+        if (drag.current.moved) e.stopPropagation();
+      }}
+      className="no-scrollbar mt-12 flex cursor-grab select-none gap-6 overflow-x-auto pb-4 active:cursor-grabbing"
+      style={{ scrollSnapType: "x mandatory" }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function Reveal({
+  children,
+  className = "",
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={`reveal ${visible ? "reveal-visible" : ""} ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function StickyAdBar() {
+  const [muted, setMuted] = useState(true);
+
+  return (
+    <div className="fixed inset-x-0 bottom-0 z-50 border-t-2 border-[#D9A404] bg-black">
+      <div className="mx-auto flex max-w-7xl items-center gap-3 px-3 py-2 md:gap-4 md:px-6 md:py-3">
+        <span className="hidden shrink-0 bg-[#D9A404] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.22em] text-black sm:inline-flex">
+          Patrocinado
+        </span>
+
+        <div className="relative flex-1 overflow-hidden border border-white/10 bg-[#0a0a0a]">
+          <video
+            className="block h-[56px] w-full object-contain md:hidden"
+            src="/anuncios.mp4"
+            autoPlay
+            muted={muted}
+            loop
+            playsInline
+          />
+          <video
+            className="hidden h-[76px] w-full object-contain md:block"
+            src="/videoparapc.mp4"
+            autoPlay
+            muted={muted}
+            loop
+            playsInline
+          />
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setMuted((prev) => !prev)}
+          aria-label={muted ? "Ativar som do anúncio" : "Silenciar anúncio"}
+          className="footer-icon-button h-10 w-10 shrink-0 md:h-11 md:w-11"
+        >
+          {muted ? (
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" /><path d="m16 9 4 4M20 9l-4 4" /></svg>
+          ) : (
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" /><path d="M16 8a4 4 0 0 1 0 8" /><path d="M18.5 5.5a8 8 0 0 1 0 13" /></svg>
+          )}
+        </button>
       </div>
     </div>
   );
