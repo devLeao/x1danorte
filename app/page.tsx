@@ -637,18 +637,20 @@ function StickyAdBar() {
           />
         </div>
 
-        <button
-          type="button"
-          onClick={() => setMuted((prev) => !prev)}
-          aria-label={muted ? "Ativar som do anúncio" : "Silenciar anúncio"}
-          className="footer-icon-button h-10 w-10 shrink-0 md:h-11 md:w-11"
-        >
-          {muted ? (
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" /><path d="m16 9 4 4M20 9l-4 4" /></svg>
-          ) : (
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" /><path d="M16 8a4 4 0 0 1 0 8" /><path d="M18.5 5.5a8 8 0 0 1 0 13" /></svg>
-          )}
-        </button>
+        <div className="hidden shrink-0 md:block">
+          <button
+            type="button"
+            onClick={() => setMuted((prev) => !prev)}
+            aria-label={muted ? "Ativar som do anúncio" : "Silenciar anúncio"}
+            className="footer-icon-button h-11 w-11"
+          >
+            {muted ? (
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" /><path d="m16 9 4 4M20 9l-4 4" /></svg>
+            ) : (
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" /><path d="M16 8a4 4 0 0 1 0 8" /><path d="M18.5 5.5a8 8 0 0 1 0 13" /></svg>
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );
