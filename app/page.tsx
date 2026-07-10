@@ -348,7 +348,7 @@ export default function X1DaNorteSite() {
                   </div>
                 ))}
               </HorizontalScroller>
-              <p className="mt-4 text-xs font-bold uppercase tracking-[0.2em] text-white/30">Arraste para o lado para ver mais →</p>
+              <p className="mt-4 text-xs font-bold uppercase tracking-[0.2em] text-white/30">Use as setas ou arraste para o lado para ver mais →</p>
             </>
           ) : (
             <p className="mt-12 max-w-xl text-white/40">
@@ -524,20 +524,45 @@ function HorizontalScroller({ children }: { children: React.ReactNode }) {
     ref.current?.releasePointerCapture(e.pointerId);
   };
 
+  const scrollByCard = (dir: 1 | -1) => {
+    const el = ref.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * Math.min(el.clientWidth * 0.9, 380), behavior: "smooth" });
+  };
+
   return (
-    <div
-      ref={ref}
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={endDrag}
-      onPointerLeave={endDrag}
-      onClickCapture={(e) => {
-        if (drag.current.moved) e.stopPropagation();
-      }}
-      className="no-scrollbar mt-12 flex cursor-grab select-none gap-6 overflow-x-auto pb-4 active:cursor-grabbing"
-      style={{ scrollSnapType: "x mandatory" }}
-    >
-      {children}
+    <div className="relative mt-12">
+      <div
+        ref={ref}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerLeave={endDrag}
+        onClickCapture={(e) => {
+          if (drag.current.moved) e.stopPropagation();
+        }}
+        className="no-scrollbar flex cursor-grab select-none gap-6 overflow-x-auto pb-4 active:cursor-grabbing"
+        style={{ scrollSnapType: "x mandatory" }}
+      >
+        {children}
+      </div>
+
+      <button
+        type="button"
+        onClick={() => scrollByCard(-1)}
+        aria-label="Ver posts anteriores"
+        className="footer-icon-button absolute left-1 top-1/2 hidden -translate-y-1/2 bg-black/80 md:flex"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6" /></svg>
+      </button>
+      <button
+        type="button"
+        onClick={() => scrollByCard(1)}
+        aria-label="Ver mais posts"
+        className="footer-icon-button absolute right-1 top-1/2 hidden -translate-y-1/2 bg-black/80 md:flex"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
+      </button>
     </div>
   );
 }
